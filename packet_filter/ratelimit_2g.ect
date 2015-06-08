@@ -1,3 +1,6 @@
+## sample-device
+
+```
 set firewall policer sample-policer if-exceeding bandwidth-limit 2g
 set firewall policer sample-policer if-exceeding burst-size-limit 1250000
 set firewall policer sample-policer then discard
@@ -13,3 +16,4 @@ set firewall filter sample-filter term sample-term then accept
 <% for intf in @intfs : %>
 set interfaces <%= intf %> family inet filter input sample-filter
 <% end %>
+```
