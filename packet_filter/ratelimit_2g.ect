@@ -1,0 +1,15 @@
+set firewall policer sample-policer if-exceeding bandwidth-limit 2g
+set firewall policer sample-policer if-exceeding burst-size-limit 1250000
+set firewall policer sample-policer then discard
+
+<% for src_ip in @src_ips : %>
+set firewall filter sample-filter term sample-term from source-address <%= src_ip %>/32
+<% end %>
+<% for dst_ip in @dst_ips : %>
+set firewall filter sample-filter term sample-term from destination-address <%= dst_ip %>/32
+set firewall filter sample-filter term sample-term then policer sample-policer
+set firewall filter sample-filter term sample-term then accept
+
+<% for intf in @intfs : %>
+set interfaces <%= intf %> family inet filter input sample-filter
+<% end %>
