@@ -1,0 +1,15 @@
+#
+# How to handle a trouble on network interface
+#
+# Parameters
+#   host:     hostname
+#   intfname: interface name
+
+## トラブル対応手順: <%= @hostname %> <%= @intfname %>
+
+```
+ssh <%= @hostname %>
+show log messages
+show interface <%= @intfname %>
+...
+```
