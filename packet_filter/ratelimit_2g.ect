@@ -1,13 +1,9 @@
 #
-# ああああああああ
+# Configure 2Gbps for rate-limit againt DDoS
 #
-# Parameters: 
-#   dst: [ ip_address, ... ]
-#   src: [ prefix, ... ]
-#   interface: [ interface, ]
+# Parameters
+#   src: [ prefix_a, prefix_b, ... ]
 #
-
-## sample-device
 
 ```
 set firewall policer sample-policer if-exceeding bandwidth-limit 2g
@@ -18,14 +14,9 @@ set firewall policer sample-policer then discard
 set firewall filter sample-filter term sample-term from source-address <%= prefix %>
 
 <% end %>
-<% for prefix in @dst : %>
-set firewall filter sample-filter term sample-term from destination-address <%= prefix %>
 
-<% end %>
 set firewall filter sample-filter term sample-term then policer sample-policer
 set firewall filter sample-filter term sample-term then accept
 
-<% for intf in @interface : %>
-set interfaces <%= intf %> family inet filter input sample-filter
-<% end %>
+set interfaces xe-0/0/0.0 family inet filter input sample-filter
 ```
