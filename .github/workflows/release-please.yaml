@@ -1,3 +1,5 @@
+name: Release Please
+
 on:
   push:
     branches:
@@ -15,7 +17,7 @@ jobs:
           app-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
-      - name: Release please
+      - name: Release Please
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
