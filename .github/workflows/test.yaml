@@ -1,0 +1,40 @@
+name: test
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Test
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "${{ github.workflow }} のテスト (${{ github.repository }} / ${{ github.ref }})"
+            blocks:
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "*${{ github.workflow }}* のテスト"
+              - type: section
+                fields:
+                  - type: mrkdwn
+                    text: "*repo*\n<${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>"
+                  - type: mrkdwn
+                    text: "*message*\n${{ github.event.head_commit.message }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|commit>"
+                  - type: mrkdwn
+                    text: "*author*\n${{ github.actor }}"
+                  - type: mrkdwn
+                    text: "*ref*\n${{ github.ref }}"
+                  - type: mrkdwn
+                    text: "*workflow*\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|${{ github.workflow }}>"
+              - type: context
+                elements:
+                  - type: mrkdwn
+                    text: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>"
